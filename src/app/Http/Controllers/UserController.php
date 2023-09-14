@@ -66,6 +66,6 @@ class UserController extends Controller
             'is_marketing' => $request->has('is_marketing') ? 1: 0,
         ]);
 
-        return response()->json([ 'status' => 1,'data' => $user], 201);
+        return response()->created($user);
     }
 }
