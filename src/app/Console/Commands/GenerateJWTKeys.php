@@ -13,13 +13,8 @@ class GenerateJWTKeys extends Command
     protected $signature = 'jwt:generate-keys';
     protected $description = 'Generate JWT private and public keys';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
-    public function handle()
-    {
+    public function handle(): void {
         try {
             // Generate private key (PEM format)
             $privateKey = openssl_pkey_new([

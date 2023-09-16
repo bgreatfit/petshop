@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
@@ -16,7 +17,7 @@ class ResponseServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 
     /**
@@ -29,9 +30,10 @@ class ResponseServiceProvider extends ServiceProvider
         $this->descriptiveResponseMethods();
     }
 
-    protected function descriptiveResponseMethods() {
+    protected function descriptiveResponseMethods(): void
+    {
 
-        Response::macro('created', function ($data) {
+         Response::macro('created', function ($data) {
             return Response::json(["success" => 1, 'data' => $data,
                 "error" => null, "errors" => [], "extra" => []], 201);
 

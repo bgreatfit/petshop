@@ -47,8 +47,6 @@ class AuthController extends Controller
      *     @OA\Response(response=500, description="Internal server error"),
      *     security={{"bearerAuth": {}}}
      * )
-     * @param \App\Http\Requests\RegisterUserRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
 
 
@@ -63,7 +61,7 @@ class AuthController extends Controller
             'address' => $request->input('address'),
             'phone_number' => $request->input('phone_number'),
             'avatar' => $request->input('avatar'),
-            'is_marketing' => $request->has('is_marketing') ? 1: 0,
+            'is_marketing' => $request->has('is_marketing') ? 1 : 0,
         ]);
 
         return response()->created($user);

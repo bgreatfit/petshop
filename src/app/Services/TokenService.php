@@ -45,7 +45,7 @@ class TokenService implements TokenServiceInterface
         $token = $this->config->builder()
             ->issuedBy(config('app.url'))
             ->permittedFor(config('app.url'))
-            ->identifiedBy(bin2hex(random_bytes(16)), true)
+            ->identifiedBy(bin2hex(random_bytes(16)))
             ->issuedAt($now)
             ->expiresAt($now->modify(config('auth.jwt.expiration')))
             ->withClaim('user_uuid', $user->uuid)
