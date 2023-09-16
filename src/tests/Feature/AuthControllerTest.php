@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Requests\RegisterUserRequest;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
@@ -60,5 +61,31 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonStructure(['message', 'errors']);
     }
+    public function testValidUserRegistration()
+    {
+        $userData = [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'johndoe@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'address' => '123 Main St',
+            'phone_number' => '1234567890',
+            'is_marketing' => true,
+        ];
+
+        $response = $this->json('POST', '/api/v1/user/create', $userData);
+
+        $response->assertStatus(201);
+
+        $response->assertJson([
+            'success' => 1,
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'johndoe@example.com',
+        ]);
+    }
+
 
 }
