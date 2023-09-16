@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 
-class UserController extends Controller
+class AuthController extends Controller
 {
     /**
      * @OA\Post(
@@ -47,12 +47,12 @@ class UserController extends Controller
      *     @OA\Response(response=500, description="Internal server error"),
      *     security={{"bearerAuth": {}}}
      * )
-     * @param \App\Http\Requests\CreateUserRequest $request
+     * @param \App\Http\Requests\RegisterUserRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
 
 
-    public function store(CreateUserRequest $request): JsonResponse
+    public function register(RegisterUserRequest $request): JsonResponse
     {
         $user = User::create([
             'uuid' => (string) Str::uuid(),

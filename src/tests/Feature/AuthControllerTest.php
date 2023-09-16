@@ -2,13 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-class UserControllerTest extends TestCase
+class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -52,7 +51,7 @@ class UserControllerTest extends TestCase
         ];
 
         // Ensure the request fails validation
-        $validator = Validator::make($invalidUserData, (new CreateUserRequest())->rules());
+        $validator = Validator::make($invalidUserData, (new RegisterUserRequest())->rules());
         $this->assertFalse($validator->passes());
 
         // Send a POST request with invalid data to create a user
@@ -61,4 +60,5 @@ class UserControllerTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonStructure(['message', 'errors']);
     }
+
 }
