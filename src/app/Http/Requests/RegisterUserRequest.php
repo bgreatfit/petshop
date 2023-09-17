@@ -25,7 +25,7 @@ class RegisterUserRequest extends FormRequest
             'first_name' => 'required|min:3',
             'last_name' => 'required|min:3',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed', // Adjust the min length as needed
+            'password' => 'required|min:8', // Adjust the min length as needed
             'address' => 'required|max:255',
             'phone_number' => 'required|max:20',
             'avatar' => 'uuid',

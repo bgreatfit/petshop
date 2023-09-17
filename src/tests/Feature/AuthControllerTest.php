@@ -86,6 +86,53 @@ class AuthControllerTest extends TestCase
             'email' => 'johndoe@example.com',
         ]);
     }
+    public function test_user_login_success()
+    {
+        $user = User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $response = $this->json('POST', '/api/v1/user/login', [
+            'email' => 'test@example.com',
+            'password' => 'password123',
+        ]);
+
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'success' => 1,
+            "error"=> null
+        ]);
+        // Extract the 'access_token' value from the response JSON
+        $response_data = $response->json();
+        $access_token = $response_data['data']['token'];
+
+        // Assert that the 'access_token' is a non-empty string
+        $this->assertNotEmpty($access_token);
+
+    }
+    public function test_user_login_failed()
+    {
+        $user = User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('passwor23'),
+        ]);
+
+        $response = $this->json('POST', '/api/v1/user/login', [
+            'email' => 'test@example.com',
+            'password' => 'password123',
+        ]);
+
+        $response->assertStatus(400);
+
+        $response->assertJson([
+            'success' => 0,
+            "error"=> "Failed to authenticate user"
+        ]);
+
+    }
 
 
 }

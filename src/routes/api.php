@@ -15,5 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->group(function () {
-    Route::post('user/create', [AuthController::class, 'register']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('user/login', 'login');
+        Route::post('user/create', 'register');
+    });
+
 });

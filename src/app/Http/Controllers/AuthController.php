@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\TokenServiceInterface;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +13,13 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+
+    private $tokenService;
+
+    public function __construct(TokenServiceInterface $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
     /**
      * @OA\Post(
      *     path="/user/create",
@@ -52,18 +61,62 @@ class AuthController extends Controller
 
     public function register(RegisterUserRequest $request): JsonResponse
     {
+        $validate = $request->validated();
         $user = User::create([
             'uuid' => (string) Str::uuid(),
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'address' => $request->input('address'),
-            'phone_number' => $request->input('phone_number'),
-            'avatar' => $request->input('avatar'),
+            'first_name' => $validate['first_name'],
+            'last_name' => $validate['last_name'],
+            'email' => $validate['email'],
+            'password' => Hash::make($validate['password']),
+            'address' => $validate['address'],
+            'phone_number' =>  $validate['phone_number'],
+            'avatar' => $request->get('firstname'),
             'is_marketing' => $request->has('is_marketing') ? 1 : 0,
         ]);
+        $user['uuid'] = $user->uuid;
 
-        return response()->created($user);
+        return response()->success($user, 201);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/user/login",
+     *     tags={"User"},
+     *     summary="Login a User account",
+     *     description="Login API endpoint",
+     *     operationId="user-login",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="User data",
+     *        @OA\JsonContent(),
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                type="object",
+     *                required={"email", "password"},
+     *                 @OA\Property(property="email", type="string", description="User email"),
+     *                 @OA\Property(property="password", type="string", description="User password")
+     *             )
+     *         )
+     *     ),
+     *
+     *    @OA\Response(response=200, description="OK"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Page not found"),
+     *     @OA\Response(response=422, description="Unprocessable Entity"),
+     *     @OA\Response(response=500, description="Internal server error"),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+    public function login(LoginRequest $request): JsonResponse {
+
+        $data = $request->validated();
+        if (!auth()->attempt($data)) {
+            return response()->badRequest('Failed to authenticate user');
+        }
+        $user = auth()->user();
+        $token = $this->tokenService->issueToken($user, 'Access Token');
+
+        return response()->success(['token'=>$token], 200);
     }
 }
