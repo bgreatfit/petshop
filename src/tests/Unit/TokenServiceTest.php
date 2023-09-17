@@ -52,7 +52,6 @@ class TokenServiceTest extends TestCase
         $user = User::factory()->create();
         // Set a new expiration time (e.g., 1 hour from now)
         $newExpiration =  Carbon::now();
-
         // Set the new value in the configuration
          Config::set('auth.jwt.expiration', $newExpiration);
 

@@ -35,8 +35,16 @@ class ResponseServiceProvider extends ServiceProvider
         $instance = $this;
 
          Response::macro('success', function ($data, $status) {
-            return Response::json(["success" => 1, 'data' => $data,
-                "error" => null, "errors" => [], "extra" => []], $status);
+            return Response::json(
+                [
+                    "success" => 1,
+                    'data' => $data,
+                     "error" => null,
+                     "errors" => [],
+                     "extra" => []
+                ],
+                $status
+            );
 
         });
 

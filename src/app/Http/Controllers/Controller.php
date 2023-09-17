@@ -20,7 +20,7 @@ use Illuminate\Routing\Controller as BaseController;
  * )
  * @OA\Server(
  *     description="Laravel Swagger API server",
- *     url="http://localhost:8080/api/v1/"
+ *     url="http://localhost:8080"
  * )
  * @OA\SecurityScheme(
  *     type="apiKey",

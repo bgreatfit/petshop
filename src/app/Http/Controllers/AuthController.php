@@ -22,7 +22,7 @@ class AuthController extends Controller
     }
     /**
      * @OA\Post(
-     *     path="/user/create",
+     *     path="/api/v1/user/create",
      *     tags={"User"},
      *     summary="Create a User account",
      *     description="User API endpoint",
@@ -63,7 +63,7 @@ class AuthController extends Controller
     {
         $validate = $request->validated();
         $user = User::create([
-            'uuid' => (string) Str::uuid(),
+            'uuid' =>  Str::uuid(),
             'first_name' => $validate['first_name'],
             'last_name' => $validate['last_name'],
             'email' => $validate['email'],
@@ -80,7 +80,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/user/login",
+     *     path="/api/v1/user/login",
      *     tags={"User"},
      *     summary="Login a User account",
      *     description="Login API endpoint",

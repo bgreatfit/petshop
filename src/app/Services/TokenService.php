@@ -52,7 +52,7 @@ class TokenService implements TokenServiceInterface
             ->getToken($this->config->signer(), $this->config->signingKey());
 
 
-        $this->storeToken($token->toString(), $user->id, $title);
+        $this->storeToken($user->uuid, $user->id, $title);
 
         return $token->toString();
     }

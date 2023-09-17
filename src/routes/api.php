@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function () {
-    Route::controller(AuthController::class)->group(function () {
+Route::prefix('v1')->group(function (): void {
+    Route::controller(AuthController::class)->group(function (): void {
         Route::post('user/login', 'login');
         Route::post('user/create', 'register');
+    });
+
+    Route::middleware('jwt.auth')->group(function (): void {
+        Route::controller(UserController::class)->group(function (): void {
+            Route::get('user', 'show');
+        });
     });
 
 });
