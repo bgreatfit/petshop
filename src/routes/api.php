@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use BgreatFit\CurrencyExchange\Http\Controllers\CurrencyExchangeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,9 @@ Route::prefix('v1')->group(function (): void {
         Route::controller(UserController::class)->group(function (): void {
             Route::get('user', 'show');
         });
+    });
+    Route::controller(CurrencyExchangeController::class)->group(function (): void {
+        Route::get('exchangerate', 'getExchangeRate');
     });
 
 });

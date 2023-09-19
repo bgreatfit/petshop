@@ -111,7 +111,7 @@
                 ]
             }
         },
-        "/user/login": {
+        "/api/v1/user/login": {
             "post": {
                 "tags": [
                     "User"
@@ -169,6 +169,53 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/v1/exchangerate": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "Get exchange rate",
+                "description": "Returns exchange rate based on daily rates from ECB",
+                "operationId": "getExchangeRate",
+                "parameters": [
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Amount in Euro",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "currency_to_exchange",
+                        "in": "query",
+                        "description": "Target currency to convert to",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
             }
         },
         "/api/v1/user": {
